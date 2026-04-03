@@ -156,6 +156,13 @@ public partial class LaststarShoesDbContext : DbContext
                 .HasColumnType("decimal(10, 2)")
                 .HasColumnName("precio");
             entity.Property(e => e.Stock).HasColumnName("stock");
+            entity.Property(e => e.Categoria)
+        .HasMaxLength(50)
+        .HasColumnName("categoria"); 
+
+            entity.Property(e => e.Genero)
+                .HasMaxLength(20)
+                .HasColumnName("genero");
 
             entity.HasOne(d => d.IdAdminNavigation).WithMany(p => p.Productos)
                 .HasForeignKey(d => d.IdAdmin)
