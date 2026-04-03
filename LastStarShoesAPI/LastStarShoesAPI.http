@@ -1,0 +1,6 @@
+@LastStarShoesAPI_HostAddress = http://localhost:5039
+
+GET {{LastStarShoesAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
