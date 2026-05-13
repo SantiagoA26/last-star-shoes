@@ -31,6 +31,11 @@ public partial class Producto
     /// <summary>
     /// Precio del producto. Este campo almacena el precio del producto, que es el monto que los clientes deben pagar para adquirir el producto en la plataforma. Es un valor de tipo decimal que no puede ser nulo, lo que garantiza que cada producto tenga un precio válido asociado. El precio del producto es esencial para la gestión eficiente de los productos, permitiendo rastrear cada producto incluido en las compras realizadas por los clientes y calcular el total de las compras en función de los precios de los productos incluidos. Además, el precio del producto es fundamental para la personalización de la experiencia del usuario, la gestión de pedidos y la atención al cliente en función de las preferencias y hábitos de compra de los clientes. Un precio competitivo y atractivo puede mejorar la satisfacción general con la plataforma y fomentar la lealtad de los clientes.
     /// </summary>
+
+    /// <summary>
+    /// URL de la imagen del producto. Este campo almacena la URL de la imagen asociada al producto, lo que permite mostrar una representación visual del producto dentro de la plataforma. Es un valor de tipo cadena que puede ser nulo, lo que permite registrar productos sin una imagen específica. Sin embargo, en la mayoría de los casos, este campo debería contener la URL de la imagen del producto para garantizar una presentación completa y atractiva del producto dentro de la plataforma. La URL de la imagen del producto es esencial para la personalización de la experiencia del usuario, la gestión de pedidos y la atención al cliente en función de las preferencias y hábitos de compra de los clientes. Además, una imagen adecuada puede mejorar la satisfacción general con la plataforma y fomentar la lealtad de los clientes.
+    /// </summary>
+    public string? ImagenUrl { get; set; }
     public decimal Precio { get; set; }
 
     /// <summary>
