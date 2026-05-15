@@ -12,10 +12,10 @@ namespace LastStarShoesAPI.Services
             _context = context;
         }
 
-        // crear un nuevo administrador con validaciones básicas para el ID, nombre, email y contraseña, además de verificar que no exista un administrador con el mismo ID o email antes de agregarlo a la base de datos
+       
         public async Task<Administrador> CreateAdministrador(Administrador administrador)
         {
-            // 🔹 Validaciones básicas
+           
             if (string.IsNullOrWhiteSpace(administrador.IdAdmin))
                 throw new Exception("El ID de administrador es obligatorio");
 
@@ -23,12 +23,12 @@ namespace LastStarShoesAPI.Services
                 throw new Exception("El nombre es obligatorio");
 
             if (string.IsNullOrWhiteSpace(administrador.Email) || !administrador.Email.Contains("@"))
-                throw new Exception("Email inválido o vacío");
+                throw new Exception("Email no valido o vacío");
 
             if (string.IsNullOrWhiteSpace(administrador.Password) || administrador.Password.Length < 6)
                 throw new Exception("La contraseña debe tener al menos 6 caracteres");
 
-            // 🔹 Validar si ya existe el ID o el Email
+       
             var existeAdmin = await _context.Administradores
                 .AnyAsync(a => a.IdAdmin == administrador.IdAdmin || a.Email == administrador.Email);
 
@@ -41,12 +41,13 @@ namespace LastStarShoesAPI.Services
             return administrador;
         }
 
+       
         public async Task<List<Administrador>> GetAdministradores()
         {
             return await _context.Administradores.ToListAsync();
         }
 
-
+     
         public async Task<Administrador> GetAdministradorById(string id)
         {
             var admin = await _context.Administradores.FindAsync(id);
@@ -57,7 +58,7 @@ namespace LastStarShoesAPI.Services
             return admin;
         }
 
-        // Actualiza el administrador existente con el ID proporcionado, permitiendo cambiar solo el nombre, email y opcionalmente la contraseña (con validación de longitud mínima)
+
         public async Task<Administrador> UpdateAdministrador(string id, Administrador administrador)
         {
             var adminExistente = await _context.Administradores.FindAsync(id);
@@ -65,14 +66,21 @@ namespace LastStarShoesAPI.Services
             if (adminExistente == null)
                 throw new Exception("Administrador no encontrado");
 
-            // Validaciones básicas para el nombre y el email (el ID no se puede cambiar)
+          
             if (string.IsNullOrWhiteSpace(administrador.Nombre))
                 throw new Exception("El nombre es obligatorio");
 
-            if (string.IsNullOrWhiteSpace(administrador.Email))
-                throw new Exception("El email es obligatorio");
+            if (string.IsNullOrWhiteSpace(administrador.Email) || !administrador.Email.Contains("@"))
+                throw new Exception("Email inválido o vacío");
 
-            // Actualizar solo el nombre y el email (el ID no se puede cambiar)
+         
+            var emailExiste = await _context.Administradores
+                .AnyAsync(a => a.Email == administrador.Email && a.IdAdmin != id);
+
+            if (emailExiste)
+                throw new Exception("El email ya está en uso por otro administrador");
+
+            
             adminExistente.Nombre = administrador.Nombre;
             adminExistente.Email = administrador.Email;
 
@@ -89,7 +97,7 @@ namespace LastStarShoesAPI.Services
             return adminExistente;
         }
 
-        // 🗑️ ELIMINAR ADMINISTRADOR
+     
         public async Task<bool> DeleteAdministrador(string id)
         {
             var admin = await _context.Administradores.FindAsync(id);
@@ -109,5 +117,5 @@ namespace LastStarShoesAPI.Services
 
             return true;
         }
-        }
+    }
 }

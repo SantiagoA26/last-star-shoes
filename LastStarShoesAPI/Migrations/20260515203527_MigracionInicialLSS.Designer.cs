@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LastStarShoesAPI.Migrations
 {
     [DbContext(typeof(LaststarShoesDbContext))]
-    [Migration("20260513160936_AgregarImagenUrlDefinitivo")]
-    partial class AgregarImagenUrlDefinitivo
+    [Migration("20260515203527_MigracionInicialLSS")]
+    partial class MigracionInicialLSS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,10 @@ namespace LastStarShoesAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("nombre");
+
+                    b.Property<string>("PasswordCliente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()

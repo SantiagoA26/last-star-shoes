@@ -41,6 +41,11 @@ public partial class Cliente
     public DateTime? FechaRegistro { get; set; }
 
     /// <summary>
+    /// password del cliente. Este campo almacena la contraseña del cliente, que se utiliza para la autenticación y seguridad de la cuenta dentro de la plataforma. Es un valor de tipo cadena que no puede ser nulo, lo que asegura que cada cliente tenga una contraseña válida asociada a su cuenta en el sistema. Es importante destacar que, por razones de seguridad, las contraseñas deben ser almacenadas de manera segura, utilizando técnicas como el hashing y salting para proteger la información sensible de los clientes. La contraseña es esencial para garantizar la seguridad de las cuentas de los clientes y proteger su información personal y sus compras realizadas en la plataforma.
+    /// </summary>
+    public string PasswordCliente { get; set; } = null!;
+
+    /// <summary>
     /// Colección de compras realizadas por el cliente. Esta propiedad representa la relación entre el cliente y las compras que ha realizado en la plataforma. Es una colección de objetos de tipo Compra, lo que indica que un cliente puede tener múltiples compras asociadas a su cuenta. Esta relación es fundamental para el seguimiento del historial de compras del cliente, la gestión de pedidos y la personalización de la experiencia del usuario en función de sus preferencias y comportamientos de compra. Además, esta colección permite acceder fácilmente a los detalles de cada compra realizada por el cliente, facilitando la gestión eficiente de los pedidos y la atención al cliente en caso de ser necesario.
     /// </summary>
     public virtual ICollection<Compra> Compras { get; set; } = new List<Compra>();

@@ -84,6 +84,10 @@ namespace LastStarShoesAPI.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("nombre");
 
+                    b.Property<string>("PasswordCliente")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Telefono")
                         .IsRequired()
                         .HasMaxLength(20)

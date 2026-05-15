@@ -12,10 +12,10 @@ namespace LastStarShoesAPI.Services
             _context = context;
         }
 
-       
+  
         public async Task<Cliente> CreateCliente(Cliente cliente)
         {
-            // 🔹 Validaciones
+            // 🔹 Validaciones básicas
             if (string.IsNullOrWhiteSpace(cliente.IdCliente))
                 throw new Exception("La cédula es obligatoria");
 
@@ -34,21 +34,23 @@ namespace LastStarShoesAPI.Services
             if (string.IsNullOrWhiteSpace(cliente.Direccion))
                 throw new Exception("La dirección es obligatoria");
 
-            // 🔹 Validar duplicado (cédula)
+            if (string.IsNullOrWhiteSpace(cliente.PasswordCliente))
+                throw new Exception("La contraseña es obligatoria");
+
             var existeCliente = await _context.Clientes
                 .AnyAsync(c => c.IdCliente == cliente.IdCliente);
 
             if (existeCliente)
                 throw new Exception("El cliente ya existe");
 
-            // 🔹 Validar email único
+            
             var existeEmail = await _context.Clientes
                 .AnyAsync(c => c.Email == cliente.Email);
 
             if (existeEmail)
                 throw new Exception("El email ya está registrado");
 
-            // 🔹 Fecha automática
+            
             cliente.FechaRegistro = DateTime.Now;
 
             _context.Clientes.Add(cliente);
@@ -57,13 +59,13 @@ namespace LastStarShoesAPI.Services
             return cliente;
         }
 
-        // 📋 LISTAR CLIENTES
+    
         public async Task<List<Cliente>> GetClientes()
         {
             return await _context.Clientes.ToListAsync();
         }
 
-        // 🔍 OBTENER CLIENTE POR ID
+
         public async Task<Cliente> GetClienteById(string id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
@@ -74,7 +76,7 @@ namespace LastStarShoesAPI.Services
             return cliente;
         }
 
-        // ✏️ ACTUALIZAR CLIENTE
+  
         public async Task<Cliente> UpdateCliente(string id, Cliente cliente)
         {
             var clienteExistente = await _context.Clientes.FindAsync(id);
@@ -82,7 +84,6 @@ namespace LastStarShoesAPI.Services
             if (clienteExistente == null)
                 throw new Exception("Cliente no encontrado");
 
-            // 🔹 Validaciones
             if (string.IsNullOrWhiteSpace(cliente.Nombre))
                 throw new Exception("El nombre es obligatorio");
 
@@ -98,25 +99,29 @@ namespace LastStarShoesAPI.Services
             if (string.IsNullOrWhiteSpace(cliente.Direccion))
                 throw new Exception("La dirección es obligatoria");
 
-            // 🔹 Validar email único
+   
+            if (string.IsNullOrWhiteSpace(cliente.PasswordCliente))
+                throw new Exception("La contraseña es obligatoria");
+
+      
             var emailExiste = await _context.Clientes
                 .AnyAsync(c => c.Email == cliente.Email && c.IdCliente != id);
 
             if (emailExiste)
                 throw new Exception("El email ya está en uso");
 
-            // 🔹 Actualizar datos
+
             clienteExistente.Nombre = cliente.Nombre;
             clienteExistente.Email = cliente.Email;
             clienteExistente.Telefono = cliente.Telefono;
             clienteExistente.Direccion = cliente.Direccion;
+            clienteExistente.PasswordCliente = cliente.PasswordCliente; 
 
             await _context.SaveChangesAsync();
 
             return clienteExistente;
         }
 
-        // ❌ ELIMINAR CLIENTE
         public async Task<bool> DeleteCliente(string id)
         {
             var cliente = await _context.Clientes.FindAsync(id);
@@ -124,7 +129,6 @@ namespace LastStarShoesAPI.Services
             if (cliente == null)
                 return false;
 
-            // 🔹 Validar si tiene compras
             var tieneCompras = await _context.Compras
                 .AnyAsync(c => c.IdCliente == id);
 
